@@ -1,11 +1,15 @@
+import redis
+
+r = redis.StrictRedis(host='localhost', port=6379, db=0)
+
 def complete(r,prefix,count):
     results = []
     rangelen = 50 # This is not random, try to get replies < MTU size
-    start = r.zrank('compl',prefix)
+    start = r.zrank('autoCompleteIndex',prefix)
     if not start:
          return []
     while (len(results) != count):
-         range = r.zrange('compl',start,start+rangelen-1)
+         range = r.zrange('autoCompleteIndex',start,start+rangelen-1)
          start += rangelen
          if not range or len(range) == 0:
              break

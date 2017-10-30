@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <title>jQuery UI Autocomplete functionality</title>
+      <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+      <!--<script src="http://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>-->
+      <!-- Javascript -->
+      <!-- <script>
+        $(function(){
+            $.ajaxSetup({ scriptCharset: "utf-8" ,contentType: "application/x-www-form-urlencoded; charset=UTF-8" });
+            //this is OpenClinica specific
+             //var myOutputField = $("#myOutput").parent().parent().find("input");
+            //myOutputField.attr("readonly",true);
+             $( "#icd9" ).autocomplete({
+                source: function(req, res){
+                    console.log('req.term: ' + req.term);
+                    $.ajax({url: "http://127.0.0.1:1337/?callback=?",
+                            dataType: "jsonp",
+                            data:{
+                                q: encodeURI(req.term)
+                            },
+                            success: function(data){
+                                res(data);
+                            },
+                            error: function(xhr, status, err){
+                                console.log(status);
+                                console.log(err);
+                            }
+                    });
+                },
+                minLength: 2,
+                select: function(event, ui){
+                    if (ui.item){
+                        $('#selectedIcd9Label').text(ui.item.label);
+                        $('#myOutput').val(ui.item.label.split(' - ')[0]);
+                    }
+                }
+             });
+        });
+      </script> -->
+   </head>
+   <body>
+     <div id="remote">
+       <input class="typeahead" type="text" placeholder="Oscar winners for Best Picture">
+     </div>
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+     <script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>
+  	 <script src="/scripts/typeahead.bundle.js"></script>
+  	 <!-- <script src="js/bloodhound.js"></script> -->
+     <script type='text/javascript'>
+      $(window).load(
+        function()
+        {
+          var bestPictures = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            prefetch: '../data/films/post_1960.json',
+            remote: {
+              url: 'http://localhost:3000/autocomplete?term=%QUERY',
+              wildcard: '%QUERY',
+              transform: function(response) {
+                // Map the remote source JSON array to a JavaScript object array
+                return $.map(response, function(movie) {
+                  return {
+                    value: movie
+                  };
+                });
+              }
+            }
+          });
+          $('#remote .typeahead').typeahead(null, {
+            name: 'best-pictures',
+            display: 'value',
+            source: bestPictures
+          });
+        });
+
+    </script>
+   </body>
+</html>
