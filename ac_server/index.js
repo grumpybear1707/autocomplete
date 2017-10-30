@@ -1,8 +1,16 @@
-var redis = require("redis"), redisClient = redis.createClient('6379', '127.0.0.1');
+var redis = require("redis"), redisClient = redis.createClient('6379', '35.201.234.90');
 var path = require('path');
 const express = require('express')
 var app = express()
 const port = 3000
+
+redisClient.auth('password', function (err) {
+    if (err) throw err;
+});
+
+// redisClient.on('connect', function() {
+//     console.log('Connected to Redis');
+// });
 
 app.use(express.static(path.join(__dirname, 'public')));
 

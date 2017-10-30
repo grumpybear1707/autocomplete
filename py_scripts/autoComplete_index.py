@@ -1,6 +1,6 @@
 import redis
 
-r = redis.StrictRedis(host='localhost', port=6379, db=0)
+r = redis.StrictRedis(host='35.201.234.90', port=6379, db=0, password='CzwpBuZ1nJGR')
 
 # Create the completion sorted set
 if r.exists('autoCompleteIndex') == False:
