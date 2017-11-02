@@ -1,6 +1,6 @@
 import redis
 
-r = redis.StrictRedis(host='35.201.234.90', port=6379, db=0, password='CzwpBuZ1nJGR')
+r = redis.StrictRedis(host='ip', port=6379, db=0, password='pwd')
 
 def complete(r,prefix,count):
     results = []

@@ -1,10 +1,10 @@
-var redis = require("redis"), redisClient = redis.createClient('6379', '35.201.234.90');
+var redis = require("redis"), redisClient = redis.createClient('6379', 'ip');
 var path = require('path');
 const express = require('express')
 var app = express()
 const port = 3000
 
-redisClient.auth('password', function (err) {
+redisClient.auth('pwd', function (err) {
     if (err) throw err;
 });
 
@@ -33,7 +33,7 @@ app.get('/autocomplete', (request, response) => {
           else
           {
             console.log("zrank returned: " + reply);
-            redisClient.zrange('autoCompleteIndex', reply, reply + 50,
+            redisClient.zrange('autoCompleteIndex', reply, reply + 200,
               function(err, reply)
               {
                 if (err !== null){
@@ -53,6 +53,8 @@ app.get('/autocomplete', (request, response) => {
                       break;
                     if(productStr[productStr.length-1] == "*")
                       replies.push(productStr.substring(0,productStr.length-1));
+                    if(replies.length == 6)
+                      break;
                   }
                   //replies = replies.sort();
                   //var str = callback + '( ' + JSON.stringify(replies) + ')';
